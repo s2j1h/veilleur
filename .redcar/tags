@@ -1,4 +1,4 @@
-1296979808
+1297030636
 Bundler	/home/julien/code/veilleur-url/.gems/bundler_gems/jruby/1.8/environment.rb	module Bundler
 CommandLineError	/home/julien/code/veilleur-url/.gems/bundler_gems/jruby/1.8/environment.rb	  class CommandLineError 
 DependencyError	/home/julien/code/veilleur-url/.gems/bundler_gems/jruby/1.8/environment.rb	  class DependencyError 
@@ -20,7 +20,9 @@ RemoteError	/home/julien/code/veilleur-url/.gems/bundler_gems/jruby/1.8/environm
 RemoteInstallationCancelled	/home/julien/code/veilleur-url/.gems/bundler_gems/jruby/1.8/environment.rb	  class RemoteInstallationCancelled 
 RemoteInstallationSkipped	/home/julien/code/veilleur-url/.gems/bundler_gems/jruby/1.8/environment.rb	  class RemoteInstallationSkipped 
 RemoteSourceException	/home/julien/code/veilleur-url/.gems/bundler_gems/jruby/1.8/environment.rb	  class RemoteSourceException 
+Result	/home/julien/code/veilleur-url/watcher.rb	class Result
 SystemExitException	/home/julien/code/veilleur-url/.gems/bundler_gems/jruby/1.8/environment.rb	  class SystemExitException 
+Test	/home/julien/code/veilleur-url/watcher.rb	class Test
 VerificationError	/home/julien/code/veilleur-url/.gems/bundler_gems/jruby/1.8/environment.rb	  class VerificationError 
 _combine_except	/home/julien/code/veilleur-url/.gems/bundler_gems/jruby/1.8/environment.rb	      def _combine_except(except)
 _combine_only	/home/julien/code/veilleur-url/.gems/bundler_gems/jruby/1.8/environment.rb	      def _combine_only(only)

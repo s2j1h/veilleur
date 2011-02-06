@@ -2,6 +2,27 @@ require 'sinatra'
 require 'dm-core'
 require 'appengine-apis/urlfetch'
 
+# Configure DataMapper to use the App Engine datastore 
+DataMapper.setup(:default, "appengine://auto")
+
+# Create your model class
+class Result
+  include DataMapper::Resource
+  property :id,     Serial
+  property :date,   Time
+  property :value,  Float
+  
+  belongs_to :test  # defaults to :required => true
+end
+
+class Test
+  include DataMapper::Resource
+  property :id,     Serial
+  property :url,    String
+  
+  has n, :results
+end
+
 
 # Make sure our template can use <%=h
 helpers do
@@ -10,23 +31,42 @@ helpers do
 end
 
 get '/' do  
+  @tests = Test.all
   erb :index
 end
 
-get '/go' do
-  url = "http://veilleur.zeneffy.fr/go"  
-  AppEngine::URLFetch.fetch(url, :method => 'GET')
-  return "done"
+post '/new' do
+  # Create a new shout and redirect back to the list.
+  test = Test.create(:url => params[:url])
+  redirect '/'
 end
 
-__END__
+#delete tests
+get '/:id/delete' do
+  test = Test.get(params[:id])
+  test.destroy
+  redirect '/'
+end
 
-@@ index
-<html>
-  <head>
-    <title>Veilleur-URL</title>
-  </head>
-  <body style="font-family: sans-serif;">
+get '/:id/list' do
+  test = Test.get(params[:id])
+  @results = test.results.all
+  erb :list
+end
 
-  </body>
-</html>
+
+get '/go' do
+  tests = Test.all
+  tests.each do |test|
+    begin
+      url = test.url      
+      before = Time.new
+      AppEngine::URLFetch.fetch(url, :method => 'GET')
+      after = Time.new
+      test.results.create(:value => (after - before),:date => before)
+    rescue
+      test.results.create(:value => -1,:date => before)         
+    end 
+  end
+  return "Done"  
+end

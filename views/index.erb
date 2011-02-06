@@ -1,0 +1,17 @@
+<h1>Veilleur: Liste des tests</h1>
+
+    <% unless @tests.empty? %>
+    <% @tests.each do |test|%>
+    <ul>
+      <li><a HREF="<%=h test.url %>"><%=h test.url %></a> <a href="/<%= test.id%>/delete"> [delete]</a> <a href="/<%= test.id%>/list"> [list]</a></li>
+    </ul>
+    <% end %>
+    <% else %>
+      No test
+    <% end %>
+    
+  <form action="/new" method="post">
+    <input type="text" name="url">
+    <input type="submit" value="Add url" id="button">
+  </div>
+  

@@ -1,0 +1,12 @@
+<h1>Veilleur: Liste des resultats</h1>
+
+    <% unless @results.empty? %>
+      <% @results.each do |result|%>
+      <ul>
+        <li><%= result.date %>: <%= result.value %></li>
+      </ul>
+      <% end %>
+    <% else %>
+      No Result
+    <% end %>
+    
