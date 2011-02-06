@@ -1,0 +1,3 @@
+application: veilleur-url
+version: 1
+runtime: jruby
