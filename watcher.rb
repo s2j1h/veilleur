@@ -44,13 +44,14 @@ end
 #delete tests
 get '/:id/delete' do
   test = Test.get(params[:id])
+  test.results.destroy
   test.destroy
   redirect '/'
 end
 
 get '/:id/list' do
   test = Test.get(params[:id])
-  @results = test.results.all
+  @results = test.results.all(:order => [:date.asc])
   erb :list
 end
 

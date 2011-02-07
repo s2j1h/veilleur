@@ -1,12 +1,17 @@
 <h1>Veilleur: Liste des resultats</h1>
-
     <% unless @results.empty? %>
-      <% @results.each do |result|%>
-      <ul>
-        <li><%= result.date %>: <%= result.value %></li>
-      </ul>
-      <% end %>
+    <div id="placeholder" style="width:600px;height:300px;"></div> 
+    <script id="source" language="javascript" type="text/javascript"> 
+      $(function () {
+        var d = [];
+        <% @results.each do |result|%>
+          d.push([<%= result.date.to_i*1000 %>, <%= result.value %>])
+        <% end %>
+        $.plot($("#placeholder"), [d], { xaxis: { mode: "time" } });
+      });
+    </script>
     <% else %>
       No Result
     <% end %>
+    
     
