@@ -6,7 +6,7 @@ html {
 } 
 body { 
   margin: 0; 
-  padding: 1em; /* Remettre à zéro si nécessaire. */ 
+  padding: 0; /* Remettre à zéro si nécessaire. */ 
   /* Pensez à utiliser une collection de polices (2), par ex: */
   font-family: Arial, Helvetica, FreeSans, sans-serif;
   font-size: .8em; /* À adapter pour la police choisie. (3) */ 
@@ -76,13 +76,127 @@ em {
 strong { 
   font-weight: bold; 
 } 
- 
-/* Formulaires */ 
-form, fieldset { 
-  margin: 0; 
-  padding: 0; 
-  border: none; 
-} 
-input, button, select { 
-  vertical-align: middle; /* Solution pb. d'alignement. (9) */ 
+
+/* ----------- My Form ----------- */
+form, button{border:0; margin:0; padding:0;}
+.spacer{clear:both; height:1px;}
+
+.myform{
+margin:0;
+width:400px;
+padding:5px;
+}
+
+/* ----------- stylized ----------- */
+#stylized{
+border:solid 2px #A64B00;
+background:#FFB273;
+}
+
+#stylized h1 {
+font-size:14px;
+font-weight:bold;
+margin-bottom:4px;
+}
+
+#stylized p{
+font-size:11px;
+color:#666666;
+margin-bottom:10px;
+border-bottom:solid 1px #A64B00;
+padding-bottom:5px;
+}
+
+#stylized label{
+display:block;
+font-weight:bold;
+text-align:right;
+width:140px;
+float:left;
+}
+
+#stylized .small{
+color:#666666;
+display:block;
+font-size:11px;
+font-weight:normal;
+text-align:right;
+width:140px;
+}
+
+#stylized input{
+float:left;
+font-size:12px;
+padding:4px 2px;
+border:solid 1px #A64B00;
+width:200px;
+margin:2px 0 20px 10px;
+}
+
+#stylized button{
+clear:both;
+margin-left:150px;
+width:125px;
+height:31px;
+background:#666666;
+text-align:center;
+line-height:31px;
+color:#FFFFFF;
+font-size:11px;
+font-weight:bold;
+}
+
+
+/* header */
+
+#header {
+	height: 30px;
+	margin: 0 auto;
+	padding: 0px 0 15px 0;
+	background: #FF9640;
+	border-bottom: 10px solid #FFB273;
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+#header h1 {
+  font-family: 'Ubuntu';
+	margin: 0 auto;
+  width:800px;
+	line-height: normal;
+	font-size: 40px;
+	color: #FFFFFF;
+}
+
+#header a {
+	color: #FFFFFF;
+}
+
+/* Footer */
+
+#footer {
+	height: 15px;
+	padding: 0px 0 15px 0;
+	background: #FF9640;
+	border-top: 5px solid #FFB273;
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+#footer p {
+	margin: 0;
+	padding-top: 10px;
+	line-height: normal;
+	font-size: 9px;
+	text-transform: uppercase;
+	text-align: center;
+	color: #FFFFFF;
+}
+
+#footer a {
+	color: #FFFFFF;
+}
+
+#content {
+  margin: 0 auto;
+  padding-bottom: 50px;
+  width:800px;
 }

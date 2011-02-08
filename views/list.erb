@@ -1,4 +1,4 @@
-<h1>Veilleur: Liste des resultats</h1>
+<h1>Liste des resultats pour <%= @test.url%></h1>
     <% unless @results.empty? %>
     <div id="placeholder" style="width:600px;height:300px;"></div> 
     <script id="source" language="javascript" type="text/javascript"> 
@@ -7,11 +7,11 @@
         <% @results.each do |result|%>
           d.push([<%= result.date.to_i*1000 %>, <%= result.value %>])
         <% end %>
-        $.plot($("#placeholder"), [d], { xaxis: { mode: "time" } });
+        $.plot($("#placeholder"), [d], { xaxis: { mode: "time", timeformat: "%m/%d/%y",minTickSize: [1, "day"] } });
       });
     </script>
     <% else %>
       No Result
     <% end %>
-    
+    <a href="/">Retour</a>
     

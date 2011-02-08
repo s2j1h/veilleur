@@ -37,7 +37,9 @@ end
 
 post '/new' do
   # Create a new shout and redirect back to the list.
-  test = Test.create(:url => params[:url])
+  if params[:url] != nil and params[:url] != ""
+    test = Test.create(:url => params[:url])
+  end  
   redirect '/'
 end
 
@@ -50,8 +52,8 @@ get '/:id/delete' do
 end
 
 get '/:id/list' do
-  test = Test.get(params[:id])
-  @results = test.results.all(:order => [:date.asc])
+  @test = Test.get(params[:id])
+  @results = @test.results.all(:order => [:date.asc])
   erb :list
 end
 
