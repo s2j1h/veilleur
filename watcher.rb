@@ -35,6 +35,10 @@ get '/' do
   erb :index
 end
 
+get '/new' do
+  erb :new
+end
+
 post '/new' do
   # Create a new shout and redirect back to the list.
   if params[:url] != nil and params[:url] != ""

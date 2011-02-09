@@ -1,24 +1,45 @@
 <h1>Liste des tests</h1>
 
 <% unless @tests.empty? %>
-<% @tests.each do |test|%>
-<ul>
-  <li><a HREF="<%=h test.url %>"><%=h test.url %></a> <a href="/<%= test.id%>/delete"> [effacer]</a> <a href="/<%= test.id%>/list"> [voir]</a></li>
-</ul>
-<% end %>
+<table summary="Liste des urls testées"> 
+	<thead> 
+	<tr class="odd"> 
+		<td class="column1"></td> 
+		<th scope="col" abbr="1">1</th> 
+		<th scope="col" abbr="2">2</th>	
+    <th scope="col" abbr="1">1</th> 
+		<th scope="col" abbr="2">2</th>	
+    <th scope="col" abbr="1">1</th> 
+		<th scope="col" abbr="2">2</th>
+    <th scope="col" abbr="2">2</th>	
+    <th scope="col" abbr="Actions">Actions</th>
+	</tr>	
+</thead>   
+	<tbody>
+    <% odd = 0
+       @tests.each do |test|
+    %>
+    <%if odd == 1%>
+      <tr class="odd"> 
+      <%odd = 0%>
+    <%else%>
+      <tr>
+      <% odd = 1%>   
+    <%end%>
+		<th scope="row" class="column1"><a HREF="<%=h test.url %>"><%=h test.url %></th> 
+      <td><img src="ok.png"></td> 
+		<td><img src="ok.png"></td> 
+    <td><img src="nok.png"></td> 
+		<td><img src="ok.png"></td> 
+    <td><img src="warning.png"></td> 
+		<td><img src="nok.png"></td>
+    <td><img src="ok.png"></td> 
+    <td><a href="/<%= test.id%>/delete"> [effacer]</a> <a href="/<%= test.id%>/list"> [voir]</a></td>
+  </tr>
+  <% end %>
+	</tbody> 
+</table> 
 <% else %>
 No test
 <% end %>
 
-<div id="stylized" class="myform">
-  <form id="form" name="form" action="/new" method="post">
-    <h1>Ajouter un nouveau Test</h1>
-    <p>Ce test sera lancé dans maximum 5 minutes</p>
-    <label>URL
-      <span class="small">ne pas oublier de mettre http://</span>
-    </label>
-    <input type="text" name="url" id="url">
-    <input type="submit" value="Ajouter test" id="button">
-    <div class="spacer"></div>
-  </form>
-</div>
