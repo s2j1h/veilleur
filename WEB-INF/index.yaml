@@ -1,0 +1,13 @@
+indexes:
+
+- kind: Archives
+  ancestor: no
+  properties:
+  - name: test_id
+  - name: type
+  - name: date
+- kind: Results
+  ancestor: no
+  properties:
+  - name: test_id
+  - name: date
