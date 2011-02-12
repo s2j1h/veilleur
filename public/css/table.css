@@ -1,30 +1,3 @@
-html, body, form, fieldset, h1, h2, h3, h4, h5, h6, p, pre, blockquote, ul, ol, dl, address {
-	margin:0;
-	padding:0;
-		}
-body {
-	background: #fff url(graphics/bg-body.gif) repeat-x;
-	font:76%/160% "Trebuchet MS",Verdana,Arial,Helvetica,sans-serif;
-	}
-p {
-	text-align:center;
-	}	
-a:link {
-	color:#d42945;
-	text-decoration:none;
-	border-bottom:1px dotted #ffbac8;
-	}	
-a:visited {
-	color:#d42945;
-	border-bottom:none;
-	text-decoration:none;
-	}		
-a:hover,
-a:focus {
-	color:#f03b58;
-	border-bottom:1px solid #f03b58;
-	text-decoration:none;
-	}
 table a,
 table a:link,
 table a:visited {
@@ -78,7 +51,7 @@ th {
 thead th {
 	background:#F8F8F8;
 	text-align:center;
-	font:bold 1.2em/2em "Century Gothic","Trebuchet MS",Arial,Helvetica,sans-serif;
+	font:normal 1.1em/1.6em 'Ubuntu',"Century Gothic","Trebuchet MS",Arial,Helvetica,sans-serif;
 	color:#000
 	}	
 tfoot th {
@@ -86,7 +59,7 @@ tfoot th {
 	background:#f4f9fe;
 	}	
 tfoot th strong {
-	font:bold 1.2em "Century Gothic","Trebuchet MS",Arial,Helvetica,sans-serif;
+	font:bold 1.2em 'Ubuntu',"Century Gothic","Trebuchet MS",Arial,Helvetica,sans-serif;
 	margin:.5em .5em .5em 0;
 	color:#66a3d3;
 		}		

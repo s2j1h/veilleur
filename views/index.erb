@@ -1,23 +1,19 @@
-<h1>Liste des tests</h1>
+<h1>Liste des tests <a href="/new">Créer un nouveau test?</a></h1>
 
-<% unless @tests.empty? %>
+<% unless @array.empty? %>
 <table summary="Liste des urls testées"> 
 	<thead> 
 	<tr class="odd"> 
 		<td class="column1"></td> 
-		<th scope="col" abbr="1">1</th> 
-		<th scope="col" abbr="2">2</th>	
-    <th scope="col" abbr="1">1</th> 
-		<th scope="col" abbr="2">2</th>	
-    <th scope="col" abbr="1">1</th> 
-		<th scope="col" abbr="2">2</th>
-    <th scope="col" abbr="2">2</th>	
+    <%@array[0].values.each do |day|%>
+      <th scope="col" abbr="1"><%=day%></th> 
+    <%end%>	
     <th scope="col" abbr="Actions">Actions</th>
 	</tr>	
 </thead>   
 	<tbody>
-    <% odd = 0
-       @tests.each do |test|
+    <%  odd = 0
+        (1..@array.count-1).each do |i| 
     %>
     <%if odd == 1%>
       <tr class="odd"> 
@@ -26,20 +22,21 @@
       <tr>
       <% odd = 1%>   
     <%end%>
-		<th scope="row" class="column1"><a HREF="<%=h test.url %>"><%=h test.url %></th> 
-      <td><img src="ok.png"></td> 
-		<td><img src="ok.png"></td> 
-    <td><img src="nok.png"></td> 
-		<td><img src="ok.png"></td> 
-    <td><img src="warning.png"></td> 
-		<td><img src="nok.png"></td>
-    <td><img src="ok.png"></td> 
-    <td><a href="/<%= test.id%>/delete"> [effacer]</a> <a href="/<%= test.id%>/list"> [voir]</a></td>
+		<th scope="row" class="column1"><a HREF="<%=h @array[i]["url"] %>"><%=h @array[i]["url"] %></th> 
+      <%@array[0].keys.each do |day|%>
+        <%archive = @array[i][day]%>
+        <%if archive == nil%>
+        <td><img src="construction.png" alt="pas de valeur!"></td>
+        <%else%>
+        <td><img src="ok.png"><%=archive.date%></td>
+        <%end%>
+      <%end%>
+    <td><a href="/<%= @array[i]["id"]%>/delete" onclick="return confirm('Etes vous sûr - toutes les données seront perdues !');"> <img src="delete.png" alt="Effacer"></a> <a href="/<%= @array[i]["id"]%>/list"> <img src="view.png" alt="voir stats"></a></td>
   </tr>
   <% end %>
 	</tbody> 
 </table> 
 <% else %>
-No test
+Pas de test - <a href="/new">Créer un test?</a>
 <% end %>
 

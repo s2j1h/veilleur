@@ -8,7 +8,7 @@ body {
   margin: 0; 
   padding: 0; /* Remettre à zéro si nécessaire. */ 
   /* Pensez à utiliser une collection de polices (2), par ex: */
-  font-family: Arial, Helvetica, FreeSans, sans-serif;
+  font-family: 'Ubuntu',Arial, Helvetica, FreeSans, sans-serif;
   font-size: .8em; /* À adapter pour la police choisie. (3) */ 
   line-height: 1.4; /* À adapter au design. (4) */ 
   color: black; 
@@ -25,6 +25,12 @@ h1, h2, h3, h4, h5, h6 {
 h1 { 
   font-size: 1.75em; 
 } 
+
+h1 a {
+  font-size: 0.5em;
+  font-weight: normal;
+}
+
 h2 { 
   font-size: 1.5em; 
 } 
@@ -51,18 +57,23 @@ address {
 } 
  
 /* Liens */ 
-a { 
-  text-decoration: underline; 
-} 
-a:link { 
-  color: #11C; 
-} 
-a:visited { 
-  color: #339; 
-} 
-a:hover, a:focus, a:active { 
-  color: #00F; 
-} 
+a:link {
+	color:#d42945;
+	text-decoration:none;
+	border-bottom:1px dotted #ffbac8;
+	}	
+a:visited {
+	color:#d42945;
+	border-bottom:none;
+	text-decoration:none;
+	}		
+a:hover,
+a:focus {
+	color:#f03b58;
+	border-bottom:1px solid #f03b58;
+	text-decoration:none;
+	}
+
  
 /* Pas de bordure autour des images dans les liens */ 
 a img { 
@@ -89,8 +100,8 @@ padding:5px;
 
 /* ----------- stylized ----------- */
 #stylized{
-border:solid 2px #A64B00;
-background:#FFB273;
+border:solid 2px #A60000;
+background:#FF7373;
 }
 
 #stylized h1 {
@@ -153,9 +164,9 @@ font-weight:bold;
 	height: 30px;
 	margin: 0 auto;
 	padding: 0px 0 15px 0;
-	background: #FF9640;
-	border-bottom: 10px solid #FFB273;
-	font-family: Arial, Helvetica, sans-serif;
+	background: #A60000;
+	border-bottom: 10px solid #FF7373;
+	font-family: 'Ubuntu',Arial, Helvetica, sans-serif;
 }
 
 #header h1 {
@@ -176,9 +187,9 @@ font-weight:bold;
 #footer {
 	height: 15px;
 	padding: 0px 0 15px 0;
-	background: #FF9640;
-	border-top: 5px solid #FFB273;
-	font-family: Arial, Helvetica, sans-serif;
+	background: #A60000;
+	border-top: 5px solid #FF7373;
+	font-family: 'Ubuntu',Arial, Helvetica, sans-serif;
 }
 
 #footer p {

@@ -1,0 +1,10 @@
+<h1>Liste des resultats pour <%= @test.url%></h1>
+    <% unless @results.empty? %>
+        <% @results.each do |result|%>
+          <%= result.date %> : <%= result.value %>   
+        <% end %>
+    <% else %>
+      No Result
+    <% end %>
+
+    
