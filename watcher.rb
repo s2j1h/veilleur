@@ -1,6 +1,7 @@
 require 'sinatra'
 require 'dm-core'
 require 'appengine-apis/urlfetch'
+require 'appengine-apis/users'
 
 # Configure DataMapper to use the App Engine datastore 
 DataMapper.setup(:default, "appengine://auto")
@@ -10,6 +11,7 @@ class Test
   include DataMapper::Resource
   property :id,     Serial
   property :url,    String
+  property :user, User
   
   has n, :results
   has n, :archives
@@ -46,43 +48,57 @@ helpers do
 end
 
 get '/' do
-  tests = Test.all
-  today = Time.now
-  todayL = Time.local(today.year,today.month,today.day) #00:00
-  todayB = todayL - 604800
-  @array = Array.new(tests.count+1) {Hash.new}
-  #fill with dates
-  (0..6).each do |i|
-    myDate = todayL - (6-i)*86400
-    @array[0][myDate] = myDate.strftime("%d/%m")
-
-  end
-  line = 1 #line0 = line with dates
-  tests.each do |test|
-    @array[line]["url"] = test.url
-    @array[line]["id"] = test.id
-    archives = test.archives.all(:type => "day",:date.gte => todayB,:date.lte => todayL,:order => [:date.asc])
-    archives.each do |archive|      
-      @array[line][archive.date] = archive
+  user = AppEngine::Users.current_user
+  if user
+    tests = Test.all(:user => user)
+    today = Time.now
+    todayL = Time.local(today.year,today.month,today.day) #00:00
+    todayB = todayL - 604800
+    @array = Array.new(tests.count+1) {Hash.new}
+    #fill with dates
+    (0..6).each do |i|
+      myDate = todayL - (6-i)*86400
+      @array[0][myDate] = myDate.strftime("%d/%m")
+      
     end
-    line = line + 1
+    line = 1 #line0 = line with dates
+    tests.each do |test|
+      @array[line]["url"] = test.url
+      @array[line]["id"] = test.id
+      archives = test.archives.all(:type => "day",:date.gte => todayB,:date.lte => todayL,:order => [:date.asc])
+      archives.each do |archive|      
+        @array[line][archive.date] = archive
+      end
+      line = line + 1
+    end
+    
+    erb :index
+  else
+    redirect AppEngine::Users.create_login_url('/') 
   end
-  
-  erb :index
 end
 
 #display new form
 get '/new' do
-  erb :new
+  user = AppEngine::Users.current_user
+  if user
+    erb :new
+  else
+    redirect AppEngine::Users.create_login_url('/') 
+  end  
 end
 
 #add a new test
 post '/new' do
-  # Create a new shout and redirect back to the list.
-  if params[:url] != nil and params[:url] != ""
-    test = Test.create(:url => params[:url])
-  end  
-  redirect '/'
+  user = AppEngine::Users.current_user
+  if user
+    if params[:url] != nil and params[:url] != ""
+      test = Test.create(:url => params[:url], :user => user)
+      redirect '/'
+    end  
+  else
+    redirect AppEngine::Users.create_login_url('/') 
+  end 
 end
 
 #delete tests
@@ -130,11 +146,24 @@ def archivesDay(value,date,test)
 end
 
 get '/:id/list' do
-  @test = Test.get(params[:id])
-  @results = @test.results.all(:order => [:date.asc])
-  erb :list
+  user = AppEngine::Users.current_user
+  if user
+    puts "## #{user.nickname} #{user.user_id}"
+    @test = Test.first(:id => params[:id], :user => user)
+    if @test
+      @results = @test.results.all(:order => [:date.asc])
+      erb :list
+    else      
+      redirect '/'
+    end
+  else
+    redirect AppEngine::Users.create_login_url('/') 
+  end   
 end
 
+get '/logout' do
+  redirect AppEngine::Users.create_logout_url('/') 
+end
 
 get '/go' do
   tests = Test.all
