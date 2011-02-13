@@ -120,18 +120,22 @@ def archivesDay(value,date,test)
       #no change but nb of values
       nbValues = nbValues + 1
     else
-      if value > max
-        max = value
+      if value > 0 #OK
+        if value > max
+          max = value
+        end
+        if value < min
+          min = value
+        end
+        #uptime = nbvalues OK
+        mean = (mean*uptime + value) / (uptime+1)
+        uptime = uptime + 1
+        nbValues = nbValues + 1
+      else #KO
+        nbValues = nbValues + 1
       end
-      if value < min
-        min = value
-      end
-      #uptime = nbvalues OK
-      mean = (mean*uptime + value) / (uptime+1)
-      uptime = uptime + 1
-      nbValues = nbValues + 1
-      archive.update(:max => max, :min => min, :mean => mean, :uptime => uptime, :nbValues => nbValues)
     end
+    archive.update(:max => max, :min => min, :mean => mean, :uptime => uptime, :nbValues => nbValues)
   else #First Measure
     max,min,mean,uptime,nbValues = 0,0,0,0,0
     if value == -1 #KO
