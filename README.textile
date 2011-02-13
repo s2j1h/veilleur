@@ -1,0 +1,43 @@
+h1. Veilleur
+
+Veilleur est une application web pour surveiller les temps de réponse et l'uptime de sites web
+
+http://labs.zeneffy.fr/projets/veilleur
+
+h2. Introduction
+
+Abonné depuis plusieurs mois à plusieurs services de monitoring de sites web (notamment "pingdom":http://www.pingdom.com/), j’ai décidé de me faire mon propre service en profitant de l’architecture de "Google App Engine":http://code.google.com/intl/fr-FR/appengine/.
+
+Veilleur est donc né: l’application est en Ruby avec le framework "Sinatra":http://www.sinatrarb.com et se base sur "appengine-jruby":http://code.google.com/p/appengine-jruby/, qui permet d’utiliser Ruby via "JRuby":http://jruby.org/ (Implémentation de Ruby en Java).
+
+En utilisant "Google App Engine":http://code.google.com/intl/fr-FR/appengine/, je m’affranchis de la gestion de l’authentification (comptes google), de la base de donnée et surtout je peux utiliser un système "CRON":http://fr.wikipedia.org/wiki/Cron intégré dans le service Google. Ce système me permet de lancer automatiquement et périodiquement les tests d’URL pour me donner le temps d’accès et calculer la disponibilité du site web.
+
+h2. Code
+
+Le dépôt de code est hébergé sur "GitHub":http://github.com/jraigneau/veilleur
+Le bugtracker est hébergé sur "Lighthouse":http://zeneffy.lighthouseapp.com/projects/69787-veilleur/overview
+
+h2. License
+
+Veilleur est sous "license apache v2.0":http://www.apache.org/licenses/LICENSE-2.0
+
+   Copyright 2011 Julien Raigneau
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+
+h2. Avertissement
+
+Le code est sans garantie et sans (trop) de support!
+
+
+
