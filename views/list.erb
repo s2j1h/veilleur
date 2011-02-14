@@ -1,17 +1,82 @@
-<h1>Liste des resultats pour <%= @test.url%></h1>
-    <% unless @results.empty? %>
+
+
+<% unless @results.empty? %>
+  <%if @type == "day"%>
+    <h1>Aujourd'hui sur <%= @test.url.gsub("http://","")%>  <a href="/<%=@test.id%>/view/week">Cette semaine ?</a>&nbsp;<a href="/<%=@test.id%>/view/month">Ce mois ?</a>&nbsp;<a href="/<%=@test.id%>/view/year">Cette année ?</a></h1>
+  <%elsif @type == "week"%>
+    <h1>Cette semaine sur <%= @test.url.gsub("http://","")%>  <a href="/<%=@test.id%>/view/day">Aujourd'hui ?</a>&nbsp;<a href="/<%=@test.id%>/view/month">Ce mois ?</a>&nbsp;<a href="/<%=@test.id%>/view/year">Cette année ?</a></h1>
+  <%elsif @type == "month"%>%>
+    <h1>Ce mois sur <%= @test.url.gsub("http://","")%>  <a href="/<%=@test.id%>/view/day">Aujourd'hui ?</a>&nbsp;/<%=@test.id%>/view/week">Cette semaine ?</a>&nbsp;<a href="/<%=@test.id%>/view/year">Cette année ?</a></h1>
+  <%else%>
+    <h1>Cette année sur <%= @test.url.gsub("http://","")%>  <a href="/<%=@test.id%>/view/day">Aujourd'hui ?</a>&nbsp;/<%=@test.id%>/view/week">Cette semaine ?</a>&nbsp;<a href="/<%=@test.id%>/view/month">Ce mois ?</a></h1>
+  <%end%>
     <div id="placeholder" style="width:600px;height:300px;"></div> 
     <script id="source" language="javascript" type="text/javascript"> 
       $(function () {
         var d = [];
+        var max = [];
+        var min = [];
         <% @results.each do |result|%>
-          d.push([<%= result.date.to_i*1000 %>, <%= result.value %>])
-        <% end %>
-        $.plot($("#placeholder"), [d], { xaxis: { mode: "time", timeformat: "%m/%d/%y",minTickSize: [1, "day"] } });
-      });
+          <% if @type == "day"%>
+          d.push([<%= result.date.to_i*1000 %>, <%= result.value %>])          
+          $.plot($("#placeholder"), 
+            [d], 
+            { 
+              xaxis: { mode: "time", timeformat: "%H:%M",minTickSize: [0.5, "hour"] },
+              grid: {backgroundColor: { colors: ["#fff", "#eee"] }},
+              series: {lines: { show: true },points: { show: true }}  
+            } 
+            );
+          <%else%>
+          d.push([<%= result.date.to_i*1000 %>, <%= result.mean %>]) 
+          max.push([<%= result.date.to_i*1000 %>, <%= result.max %>]) 
+          min.push([<%= result.date.to_i*1000 %>, <%= result.min %>]) 
+          $.plot($("#placeholder"), 
+            [
+              { label: "Moy",  data: d},
+              { label: "Max",  data: max},
+              { label: "Min",  data: min}
+            ], 
+            { 
+              xaxis: { mode: "time", timeformat: "%d/%m",minTickSize: [1, "day"] } ,
+              yaxis: { ticks: 8, min: 0 },
+              grid: {backgroundColor: { colors: ["#fff", "#eee"] }},
+              series: {lines: { show: true },points: { show: true }}
+            }
+          
+          
+          );
+          <%end%>
+        <%end%>
+    });
     </script>
+    <%if @type != "day"%>
+    <div id="placeholder2" style="width:600px;height:300px;"></div> 
+    <script id="source" language="javascript" type="text/javascript"> 
+      $(function () {
+        var d = [];        
+        <% @results.each do |result|%>        
+          d.push([<%= result.date.to_i*1000 %>, <%= result.uptime/result.nbValues %>])
+        <%end%>
+          $.plot($("#placeholder2"), 
+          [
+          { data: d, color: "#569700",lines:{show: true,fill: true,fillColor: "rgba(186,244,110,0.5)"} }
+          ], 
+            { 
+              xaxis: { mode: "time", timeformat: "%d/%m",minTickSize: [1, "day"] },
+              yaxis: { ticks: 8, min: 0, max: 1 },
+              grid: {backgroundColor: { colors: ["#fff", "#eee"] }},              
+              series: {lines: { show: true },points: { show: true }}  
+            } 
+          );
+          
+    });
+    </script>
+    <%end%>
     <% else %>
       No Result
     <% end %>
 
+    
+    
     

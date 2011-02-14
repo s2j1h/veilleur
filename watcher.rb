@@ -11,7 +11,7 @@ class Test
   include DataMapper::Resource
   property :id,     Serial
   property :url,    String
-  property :user, User
+  property :user,   User
   
   has n, :results
   has n, :archives
@@ -149,20 +149,41 @@ def archivesDay(value,date,test)
   
 end
 
-get '/:id/list' do
+get '/:id/view/day' do
   user = AppEngine::Users.current_user
-  if user
-    puts "## #{user.nickname} #{user.user_id}"
+  if user    
     @test = Test.first(:id => params[:id], :user => user)
     if @test
-      @results = @test.results.all(:order => [:date.asc])
+      todayL = Time.new
+      todayB = Time.local(todayL.year,todayL.month,todayL.day) #00:00
+      @results = @test.results.all(:date.gte => todayB,:date.lte => todayL,:order => [:date.asc])
+      @type = "day" #display graph by hour/day
       erb :list
     else      
       redirect '/'
     end
   else
     redirect AppEngine::Users.create_login_url('/') 
-  end   
+  end
+end
+
+get '/:id/view/week' do
+  user = AppEngine::Users.current_user
+  if user    
+    @test = Test.first(:id => params[:id], :user => user)
+    if @test
+      today = Time.now
+      todayL = Time.local(today.year,today.month,today.day) #00:00
+      todayB = todayL - 604800
+      @results = @test.archives.all(:type => "day",:date.gte => todayB,:date.lte => todayL,:order => [:date.asc])
+      @type = "week" #display graph by hour/day
+      erb :list
+    else      
+      redirect '/'
+    end
+  else
+    redirect AppEngine::Users.create_login_url('/') 
+  end
 end
 
 get '/logout' do

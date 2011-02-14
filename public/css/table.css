@@ -1,46 +1,27 @@
-table a,
-table a:link,
-table a:visited {
-	border:none;
-	}							
-	
-img {
-	border:0;
-	margin-top:.5em;
-	}	
-table {
+#nicetable table {
 	width:95%;
 	border-top:1px solid #e5eff8;
 	border-right:1px solid #e5eff8;
 	margin:1em auto;
 	border-collapse:collapse;
-	}
-caption {
-	color: #000;
-	font-size:.94em;
-		letter-spacing:.1em;
-		margin:1em 0 0 0;
-		padding:0;
-		caption-side:top;
-		text-align:center;
-	}	
-tr.odd td	{
+}  
+#nicetable tr.odd td	{
 	background:#F8F8F8;
 	}
-tr.odd .column1	{
+#nicetable tr.odd .column1	{
 	background:#F8F8F8;
 	}	
-.column1	{
+#nicetable .column1	{
 	background:#FFF;
 	}
-td {
+#nicetable td {
 	color:#678197;
 	border-bottom:1px solid #EEE;
 	border-left:1px solid #EEE;
 	padding:.3em .3em;
 	text-align:center;
 	}				
-th {
+#nicetable th {
 	font-weight:normal;
 	color: #678197;
 	text-align:left;
@@ -48,24 +29,20 @@ th {
 	border-left:1px solid #EEE;
 	padding:.3em 1em;
 	}							
-thead th {
+#nicetable thead th {
 	background:#F8F8F8;
 	text-align:center;
 	font:normal 1.1em/1.6em 'Ubuntu',"Century Gothic","Trebuchet MS",Arial,Helvetica,sans-serif;
 	color:#000
-	}	
-tfoot th {
-	text-align:center;
-	background:#f4f9fe;
-	}	
-tfoot th strong {
-	font:bold 1.2em 'Ubuntu',"Century Gothic","Trebuchet MS",Arial,Helvetica,sans-serif;
-	margin:.5em .5em .5em 0;
-	color:#66a3d3;
-		}		
-tfoot th em {
-	color:#f03b58;
-	font-weight: bold;
-	font-size: 1.1em;
-	font-style: normal;
+}	
+  
+#nicetable table a,
+#nicetable table a:link,
+#nicetable table a:visited {
+	border:none;
+	}							
+
+#nicetable img {
+	border:0;
+	margin-top:.5em;
 	}	

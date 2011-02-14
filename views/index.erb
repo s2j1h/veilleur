@@ -1,6 +1,7 @@
 <h1>Liste des tests <a href="/new">Créer un nouveau test?</a></h1>
 
 <% unless @array.empty? %>
+<div id="nicetable" >
 <table summary="Liste des urls testées"> 
 	<thead> 
 	<tr class="odd"> 
@@ -29,19 +30,20 @@
               <td><img src="construction.png" alt="pas de valeur!"></td>
             <%else%>
               <%if archive.uptime/archive.nbValues < 0.98%>
-              <td><img src="nok.png" id="tip" tooltip="Max: <%=archive.max%> Min: <%=archive.min%> Moy: <%=archive.mean%> Dispo: <%=archive.uptime/archive.nbValues*100%>%"></td>
+              <td><img src="nok.png" id="tip" tooltip="Max: <%=archive.max%> <br/>Min: <%=archive.min%> <br/>Moy: <%= "%.3f" % archive.mean%> <br/>Dispo: <%= "%.2f" % (archive.uptime/archive.nbValues*100)%>%"></td>
               <%elsif archive.mean > 1%>
-              <td><img src="warning.png" id="tip" tooltip="Max: <%=archive.max%> Min: <%=archive.min%> Moy: <%=archive.mean%> Dispo: <%=archive.uptime/archive.nbValues*100%>%"></td>
+              <td><img src="warning.png" id="tip" tooltip="Max: <%=archive.max%> <br/>Min: <%=archive.min%> <br/>Moy: <%= "%.3f" % archive.mean%> <br/>Dispo: <%= "%.2f" % (archive.uptime/archive.nbValues*100)%>%"></td>
               <%else%>
-              <td><img src="ok.png" id="tip" tooltip="Max: <%=archive.max%> Min: <%=archive.min%> Moy: <%=archive.mean%> Dispo: <%=archive.uptime/archive.nbValues*100%>%"></td>
+              <td><img src="ok.png" id="tip" tooltip="Max: <%=archive.max%> <br/>Min: <%=archive.min%> <br/>Moy: <%= "%.3f" % archive.mean%> <br/>Dispo: <%= "%.2f" % (archive.uptime/archive.nbValues*100)%>%"></td>
               <%end%>
             <%end%>
           <%end%>
-    <td><a href="/<%= @array[i]["id"]%>/delete" onclick="return confirm('Etes vous sûr - toutes les données seront perdues !');"> <img src="delete.png" alt="Effacer"></a> <a href="/<%= @array[i]["id"]%>/list"> <img src="view.png" alt="voir stats"></a></td>
+    <td><a href="/<%= @array[i]["id"]%>/delete" onclick="return confirm('Etes vous sûr - toutes les données seront perdues !');"> <img src="delete.png" alt="Effacer"></a> <a href="/<%= @array[i]["id"]%>/view/day"> <img src="view.png" alt="voir stats"></a></td>
   </tr>
   <% end %>
 	</tbody> 
 </table> 
+</div>
 <% else %>
 Pas de test - <a href="/new">Créer un test?</a>
 <% end %>
@@ -59,7 +61,7 @@ $(document).ready(function()
          name: 'cream',
          padding: '7px 13px',
          width: {
-            max: 100,
+            max: 130,
             min: 0
          },
         tip: true
