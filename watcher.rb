@@ -111,9 +111,14 @@ get '/:id/delete' do
 end
 
 
-def archivesDay(value,date,test)
-  todayB = Time.local(date.year,date.month,date.day) #00:00
-  archive = test.archives.first(:date => todayB)
+def archives(value,date,test,type)
+  if type == "day"
+    todayB = Time.local(date.year,date.month,date.day) #00:00
+  elsif type == "week"
+    todayB = Time.local(date.year,date.month,date.day) #00:00
+    todayB = todayB - (6-todayB.wday)*86400 # Always on sundy    
+  end
+  archive = test.archives.first(:date => todayB, :type => type)
   if archive != nil
     max,min,mean,uptime,nbValues = archive.max,archive.min,archive.mean,archive.uptime,archive.nbValues
     if archive.uptime == 0 and nbValues > 0 #first measures were KO
@@ -143,40 +148,41 @@ def archivesDay(value,date,test)
     else #OK
       max,min,mean,uptime,nbValues = value,value,value,1,1
     end
-    test.archives.create(:type => "day",:date => todayB,:max => max, :min => min, :mean => mean, :uptime => uptime, :nbValues => nbValues)  
+    test.archives.create(:type => type,:date => todayB,:max => max, :min => min, :mean => mean, :uptime => uptime, :nbValues => nbValues)  
   end
   
   
 end
 
-get '/:id/view/day' do
+get '/:id/view/:type' do
   user = AppEngine::Users.current_user
   if user    
     @test = Test.first(:id => params[:id], :user => user)
     if @test
-      todayL = Time.new
-      todayB = Time.local(todayL.year,todayL.month,todayL.day) #00:00
-      @results = @test.results.all(:date.gte => todayB,:date.lte => todayL,:order => [:date.asc])
-      @type = "day" #display graph by hour/day
-      erb :list
-    else      
-      redirect '/'
-    end
-  else
-    redirect AppEngine::Users.create_login_url('/') 
-  end
-end
-
-get '/:id/view/week' do
-  user = AppEngine::Users.current_user
-  if user    
-    @test = Test.first(:id => params[:id], :user => user)
-    if @test
-      today = Time.now
-      todayL = Time.local(today.year,today.month,today.day) #00:00
-      todayB = todayL - 604800
-      @results = @test.archives.all(:type => "day",:date.gte => todayB,:date.lte => todayL,:order => [:date.asc])
-      @type = "week" #display graph by hour/day
+      if params[:type] == "day"
+        todayL = Time.new
+        todayB = Time.local(todayL.year,todayL.month,todayL.day) #00:00
+        @results = @test.results.all(:date.gte => todayB,:date.lte => todayL,:order => [:date.asc])
+        @type = "day" #display graph by hour/day
+      elsif params[:type] == "week"
+        today = Time.now
+        todayL = Time.local(today.year,today.month,today.day) #00:00
+        todayB = todayL - 604800
+        @results = @test.archives.all(:type => "day",:date.gte => todayB,:date.lte => todayL,:order => [:date.asc])
+        @type = "week" #display graph by hour/day
+      elsif params[:type] == "month"
+        today = Time.now
+        todayL = Time.local(today.year,today.month,today.day) #00:00
+        todayB = todayL - 2678400
+        @results = @test.archives.all(:type => "day",:date.gte => todayB,:date.lte => todayL,:order => [:date.asc])
+        @type = "month" #display graph by month
+      else
+        today = Time.now
+        todayL = Time.local(today.year,today.month,today.day) #00:00
+        todayB = Time.local(today.year,1,1)
+        @results = @test.archives.all(:type => "week",:date.gte => todayB,:date.lte => todayL,:order => [:date.asc])
+        @type = "year" #display graph by hour/day
+      end
       erb :list
     else      
       redirect '/'
@@ -204,7 +210,8 @@ get '/go' do
       value = -1
       test.results.create(:value => value,:date => date)         
     end
-    archivesDay(value,date,test)
+    archives(value,date,test,"day")
+    archives(value,date,test,"week")
   end
   return "Done"  
 end
