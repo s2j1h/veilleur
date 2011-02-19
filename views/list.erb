@@ -21,7 +21,18 @@
         var min = [];
         <% @results.each do |result|%>
           <% if @type == "day"%>
-          d.push([<%= result.date.to_i*1000 %>, <%= result.value %>])          
+          d.push([<%= result.date.to_i*1000 %>, <%= result.value %>])
+          <%elsif @type == "year"%>
+          d.push([<%= DateTime.parse(result.date.to_s).strftime("%W") %>, <%= result.mean %>])
+          max.push([<%= DateTime.parse(result.date.to_s).strftime("%W") %>, <%= result.max %>]) 
+          min.push([<%= DateTime.parse(result.date.to_s).strftime("%W") %>, <%= result.min %>]) 
+          <%else%>
+          d.push([<%= result.date.to_i*1000 %>, <%= result.mean %>]) 
+          max.push([<%= result.date.to_i*1000 %>, <%= result.max %>]) 
+          min.push([<%= result.date.to_i*1000 %>, <%= result.min %>]) 
+          <%end%>
+        <%end%>  
+        <% if @type == "day" %>
           $.plot($("#placeholder"), 
             [d], 
             { 
@@ -31,9 +42,6 @@
             } 
             );
           <%elsif @type == "year"%>
-            d.push([<%= DateTime.parse(result.date.to_s).strftime("%W") %>, <%= result.mean %>]) 
-            max.push([<%= DateTime.parse(result.date.to_s).strftime("%W") %>, <%= result.max %>]) 
-            min.push([<%= DateTime.parse(result.date.to_s).strftime("%W") %>, <%= result.min %>]) 
             $.plot($("#placeholder"), 
             [
               { label: "Moy",  data: d},
@@ -46,14 +54,9 @@
               grid: {backgroundColor: { colors: ["#fff", "#eee"] }},
               series: {lines: { show: true },points: { show: true }}
             }
-          
-          
           );
           <%else%>
-            d.push([<%= result.date.to_i*1000 %>, <%= result.mean %>]) 
-            max.push([<%= result.date.to_i*1000 %>, <%= result.max %>]) 
-            min.push([<%= result.date.to_i*1000 %>, <%= result.min %>]) 
-          $.plot($("#placeholder"), 
+            $.plot($("#placeholder"), 
             [
               { label: "Moy",  data: d},
               { label: "Max",  data: max},
@@ -68,8 +71,7 @@
           
           
           );
-          <%end%>
-        <%end%>
+          <%end%>          
     });
     </script>
     <%if @type != "day"%>
