@@ -1,0 +1,240 @@
+<style type='text/css'>
+html { 
+  font-size: 100%; 
+} 
+body { 
+  margin: 0; 
+  padding: 0;
+  font-family: Arial, Helvetica, FreeSans, sans-serif;
+  font-size: .8em;  
+  line-height: 1.4;
+  color: black; 
+  background: white; 
+} 
+h1, h2, h3, h4, h5, h6 { 
+  margin: 1em 0 .5em 0; 
+  line-height: 1.2; 
+  font-weight: bold; 
+  font-style: normal; 
+} 
+h1 { 
+  font-size: 1.75em; 
+} 
+
+h1 a {
+  font-size: 0.5em;
+  font-weight: normal;
+}
+
+h2 { 
+  font-size: 1.5em; 
+} 
+h3 { 
+  font-size: 1.25em; 
+} 
+h4 { 
+  font-size: 1em; 
+} 
+ul, ol { 
+  margin: .75em 0 .75em 32px; 
+  padding: 0; 
+} 
+p { 
+  margin: .75em 0; 
+} 
+address { 
+  margin: .75em 0; 
+  font-style: normal; 
+} 
+a:link {
+	color:#d42945;
+	text-decoration:none;
+	border-bottom:1px dotted #ffbac8;
+	}	
+a:visited {
+	color:#d42945;
+	border-bottom:none;
+	text-decoration:none;
+	}		
+a:hover,
+a:focus {
+	color:#f03b58;
+	border-bottom:1px solid #f03b58;
+	text-decoration:none;
+	}
+
+a img { 
+  border: none; 
+} 
+ 
+
+em { 
+  font-style: italic; 
+} 
+strong { 
+  font-weight: bold; 
+} 
+
+
+
+/* header */
+
+#header {
+	height: 30px;
+	margin: 0 auto;
+	padding: 0px 0 15px 0;
+	background: #A60000;
+	border-bottom: 10px solid #FF7373;
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+#header h1 {
+  font-family: Arial, Helvetica, sans-serif
+	margin: 0 auto;
+  width:800px;
+	line-height: normal;
+	font-size: 40px;
+	color: #FFFFFF;
+}
+
+#header a {
+	color: #FFFFFF;
+}
+
+/* Footer */
+
+#footer {
+	height: 15px;
+	padding: 0px 0 15px 0;
+	background: #A60000;
+	border-top: 5px solid #FF7373;
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+#footer p {
+	margin: 0;
+	padding-top: 10px;
+	line-height: normal;
+	font-size: 9px;
+	text-transform: uppercase;
+	text-align: center;
+	color: #FFFFFF;
+}
+
+#footer a {
+	color: #FFFFFF;
+}
+
+#content {
+  margin: 0 auto;
+  padding-bottom: 50px;
+  width:700px;
+}
+
+#nicetable table {
+	width:95%;
+	border-top:1px solid #e5eff8;
+	border-right:1px solid #e5eff8;
+	margin:1em auto;
+	border-collapse:collapse;
+}  
+#nicetable tr.odd td	{
+	background:#F8F8F8;
+	}
+#nicetable tr.odd .column1	{
+	background:#F8F8F8;
+	}	
+#nicetable .column1	{
+	background:#FFF;
+	}
+#nicetable td {
+	color:#678197;
+	border-bottom:1px solid #EEE;
+	border-left:1px solid #EEE;
+	padding:.3em .3em;
+	text-align:center;
+	}				
+#nicetable th {
+	font-weight:normal;
+	color: #678197;
+	text-align:left;
+	border-bottom: 1px solid #EEE;
+	border-left:1px solid #EEE;
+	padding:.3em 1em;
+	}							
+#nicetable thead th {
+	background:#F8F8F8;
+	text-align:center;
+	font:normal 1.1em/1.6em Arial,Helvetica,sans-serif;
+	color:#000
+}	
+  
+#nicetable table a,
+#nicetable table a:link,
+#nicetable table a:visited {
+	border:none;
+	}							
+
+#nicetable img {
+	border:0;
+	margin-top:.5em;
+	}	
+</style>
+
+
+<div id="header">
+  <h1>Veilleur: Synthèse quotidienne</h1>
+</div>    
+<div id="content"> 
+
+<% unless @array.empty? %>
+<div id="nicetable" >
+<table summary="Liste des urls testées"> 
+	<thead> 
+	<tr class="odd"> 
+		<td class="column1"></td> 
+    <%@array[0].values.each do |day|%>
+      <th scope="col" abbr="1"><%=day%></th> 
+    <%end%>	
+	</tr>	
+</thead>   
+	<tbody>
+    <%  odd = 0
+        (1..@array.count-1).each do |i| 
+    %>
+        <%if odd == 1%>
+          <tr class="odd"> 
+          <%odd = 0%>
+        <%else%>
+          <tr>
+          <% odd = 1%>   
+        <%end%>
+		    <th scope="row" class="column1"><a HREF="<%=h @array[i]["url"] %>"><%=h @array[i]["url"] %></th> 
+          <%@array[0].keys.each do |day|%>
+            <%archive = @array[i][day]%>
+            <%if archive == nil%>
+              <td><img src="http://veilleur.zeneffy.fr/construction.png" alt="pas de valeur!"></td>
+            <%else%>
+              <%if archive.uptime/archive.nbValues < 0.98%>
+              <td><A href="http://veilleur.zeneffy.fr"><img src="http://veilleur.zeneffy.fr/nok.png" id="tip" tooltip="Max: <%=archive.max%> <br/>Min: <%=archive.min%> <br/>Moy: <%= "%.3f" % archive.mean%> <br/>Dispo: <%= "%.2f" % (archive.uptime/archive.nbValues*100)%>%"></a></td>
+              <%elsif archive.mean > 1%>
+              <td><A href="http://veilleur.zeneffy.fr"><img src="http://veilleur.zeneffy.fr/warning.png" id="tip" tooltip="Max: <%=archive.max%> <br/>Min: <%=archive.min%> <br/>Moy: <%= "%.3f" % archive.mean%> <br/>Dispo: <%= "%.2f" % (archive.uptime/archive.nbValues*100)%>%"></a></td>
+              <%else%>
+              <td><A href="http://veilleur.zeneffy.fr"><img src="http://veilleur.zeneffy.fr/ok.png" id="tip" tooltip="Max: <%=archive.max%> <br/>Min: <%=archive.min%> <br/>Moy: <%= "%.3f" % archive.mean%> <br/>Dispo: <%= "%.2f" % (archive.uptime/archive.nbValues*100)%>%"></a></td>
+              <%end%>
+            <%end%>
+          <%end%>
+    </tr>
+  <% end %>
+	</tbody> 
+</table> 
+</div>
+<% else %>
+Pas de test
+<% end %>
+
+</div>
+
+<div id="footer">
+	<p>Veilleur est forgé par <A HREF="http://labs.zeneffy.fr">Zeneffy Labs</A>. Copyright &copy;2011 J.Raigneau. All rights reserved.</p>
+</div>

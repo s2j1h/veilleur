@@ -2,6 +2,7 @@ require 'sinatra'
 require 'dm-core'
 require 'appengine-apis/urlfetch'
 require 'appengine-apis/users'
+require 'appengine-apis/mail'
 
 # Configure DataMapper to use the App Engine datastore 
 DataMapper.setup(:default, "appengine://auto")
@@ -194,6 +195,44 @@ end
 
 get '/logout' do
   redirect AppEngine::Users.create_logout_url('/') 
+end
+
+get '/mail' do
+  tests = Test.all
+  users = Hash.new
+  tests.each do |test|
+    users["#{test.user.email}"] = test.user
+  end
+  users.values.each do |user|
+    tests = Test.all(:user => user)
+    today = Time.now
+    todayL = Time.local(today.year,today.month,today.day) #00:00
+    todayB = todayL - 604800
+    @array = Array.new(tests.count+1) {Hash.new}
+    #fill with dates
+    (0..6).each do |i|
+      myDate = todayL - (6-i)*86400
+      @array[0][myDate] = myDate.strftime("%d/%m")
+      
+    end
+    line = 1 #line0 = line with dates
+    tests.each do |test|
+      @array[line]["url"] = test.url
+      @array[line]["id"] = test.id
+      archives = test.archives.all(:type => "day",:date.gte => todayB,:date.lte => todayL,:order => [:date.asc])
+      archives.each do |archive|      
+        @array[line][archive.date] = archive
+      end
+      line = line + 1
+    end
+    user_address = user.email
+    sender_address = user.email
+    subject = "[Veilleur] Synthèse quotidienne du #{Time.new.strftime("%d/%m/%y")}"
+    body = erb :mail, :layout => false
+    AppEngine::Mail.send(sender_address, user_address, subject, nil, :html => body)
+    
+  end
+  "Done"
 end
 
 get '/go' do

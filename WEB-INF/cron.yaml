@@ -2,3 +2,6 @@ cron:
 - description: Main loop
   url: /go
   schedule: every 5 minutes
+- description: Automatic mail every night
+  url: /mail
+  schedule: every day 23:50
