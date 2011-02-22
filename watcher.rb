@@ -234,9 +234,7 @@ get '/mail' do
     subject = "[Veilleur] Synthèse quotidienne du #{Time.new.strftime("%d/%m/%y")}"
     body = erb :mail, :layout => false
     AppEngine::Mail.send(sender_address, user_address, subject, nil, :html => body)
-    
-  end
-  "Done"
+  end  
 end
 
 get '/go' do
