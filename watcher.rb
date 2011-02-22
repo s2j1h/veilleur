@@ -117,7 +117,11 @@ def archives(value,date,test,type)
     todayB = Time.local(date.year,date.month,date.day) #00:00
   elsif type == "week"
     todayB = Time.local(date.year,date.month,date.day) #00:00
-    todayB = todayB - (6-todayB.wday)*86400 # Always on sundy    
+    if todayB.wday == 0
+      todayB = todayB - 6*86400 # Always on monday
+    else
+      todayB = todayB - (todayB.wday-1)*86400 # Always on monday
+    end
   end
   archive = test.archives.first(:date => todayB, :type => type)
   if archive != nil
