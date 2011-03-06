@@ -3,10 +3,11 @@ require 'dm-core'
 require 'appengine-apis/urlfetch'
 require 'appengine-apis/users'
 require 'appengine-apis/mail'
+require 'appengine-apis/logger'
 
 # Configure DataMapper to use the App Engine datastore 
 DataMapper.setup(:default, "appengine://auto")
-
+logger = AppEngine::Logger.new
 # Create your model class
 class Test
   include DataMapper::Resource
@@ -60,7 +61,7 @@ get '/' do
     (0..6).each do |i|
       myDate = todayL - (6-i)*86400
       @array[0][myDate] = myDate.strftime("%d/%m")
-      
+
     end
     line = 1 #line0 = line with dates
     tests.each do |test|
@@ -72,7 +73,7 @@ get '/' do
       end
       line = line + 1
     end
-    
+
     erb :index
   else
     redirect AppEngine::Users.create_login_url('/') 
@@ -155,8 +156,6 @@ def archives(value,date,test,type)
     end
     test.archives.create(:type => type,:date => todayB,:max => max, :min => min, :mean => mean, :uptime => uptime, :nbValues => nbValues)  
   end
-  
-  
 end
 
 get '/:id/view/:type' do
@@ -189,7 +188,7 @@ get '/:id/view/:type' do
         @type = "year" #display graph by hour/day
       end
       erb :list
-    else      
+    else
       redirect '/'
     end
   else
@@ -217,7 +216,7 @@ get '/mail' do
     (0..6).each do |i|
       myDate = todayL - (6-i)*86400
       @array[0][myDate] = myDate.strftime("%d/%m")
-      
+
     end
     line = 1 #line0 = line with dates
     tests.each do |test|
@@ -238,21 +237,37 @@ get '/mail' do
 end
 
 get '/go' do
+  logger.debug "DEBUT /go"
   tests = Test.all
   tests.each do |test|
     date, value = Time.new, 0
     begin
-      url = test.url            
+      url = test.url
+      logger.debug "DEBUT récupération URL #{url}"
       AppEngine::URLFetch.fetch(url, :method => 'GET')
+      logger.debug "FIN récupération URL"
       after = Time.new
       value = after - date
+      logger.debug "DEBUT Creation de valeur dans la base"
       test.results.create(:value => value,:date => date)
+      logger.debug "FIN Creation de valeur dans la base"
     rescue
       value = -1
-      test.results.create(:value => value,:date => date)         
+      logger.debug "DEBUT Creation de valeur dans la base // url ne repondant pas"
+      test.results.create(:value => value,:date => date)
+      logger.debug "FIN Creation de valeur dans la base"
     end
+    logger.debug "DEBUT archivage jour"
     archives(value,date,test,"day")
+    logger.debug "FIN archivage jour"
+    logger.debug "DEBUT archivage semaine"
     archives(value,date,test,"week")
+    logger.debug "FIN archivage semaine"
   end
-  return "Done"  
+  logger.debug "FIN /go"
+  return "Done"
+end
+
+get '/ping' do
+  return "Im alive!"
 end

@@ -1,7 +1,10 @@
 cron:
 - description: Main loop
   url: /go
-  schedule: every 10 minutes
+  schedule: every 15 minutes
 - description: Automatic mail every night
   url: /mail
   schedule: every day 23:50
+- description: Automatic ping to be running all the time
+  url: /ping
+  schedule: every 1 minutes
