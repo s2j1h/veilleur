@@ -243,30 +243,17 @@ get '/go' do
     date, value = Time.new, 0
     begin
       url = test.url
-      logger.debug "DEBUT récupération URL #{url}"
       AppEngine::URLFetch.fetch(url, :method => 'GET')
-      logger.debug "FIN récupération URL"
       after = Time.new
       value = after - date
-      logger.debug "DEBUT Creation de valeur dans la base"
-      Result.create(:value => value, :date => date, :test_id => test.id)
-      #test.results.create(:value => value,:date => date)
-      logger.debug "FIN Creation de valeur dans la base"
+      Result.create(:value => value, :date => date, :test => test)
     rescue
       value = -1
-      logger.debug "DEBUT Creation de valeur dans la base // url ne repondant pas"
-      Result.create(:value => value, :date => date, :test_id => test.id)
-      #test.results.create(:value => value,:date => date)
-      logger.debug "FIN Creation de valeur dans la base"
+      Result.create(:value => value, :date => date, :test => test)
     end
-    logger.debug "DEBUT archivage jour"
     archives(value,date,test,"day")
-    logger.debug "FIN archivage jour"
-    logger.debug "DEBUT archivage semaine"
     archives(value,date,test,"week")
-    logger.debug "FIN archivage semaine"
   end
-  logger.debug "FIN /go"
   return "Done"
 end
 
