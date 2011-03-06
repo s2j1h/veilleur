@@ -249,15 +249,16 @@ get '/go' do
       after = Time.new
       value = after - date
       logger.debug "DEBUT Creation de valeur dans la base"
-      test.results.new(:value => value,:date => date)
+      Result.create(:value => value, :date => date, :test_id => test.id)
+      #test.results.create(:value => value,:date => date)
       logger.debug "FIN Creation de valeur dans la base"
     rescue
       value = -1
       logger.debug "DEBUT Creation de valeur dans la base // url ne repondant pas"
-      test.results.new(:value => value,:date => date)
+      Result.create(:value => value, :date => date, :test_id => test.id)
+      #test.results.create(:value => value,:date => date)
       logger.debug "FIN Creation de valeur dans la base"
     end
-    test.results.save
     logger.debug "DEBUT archivage jour"
     archives(value,date,test,"day")
     logger.debug "FIN archivage jour"
