@@ -10,6 +10,24 @@
   <%else%>
     <h1>Cette année sur <%= @test.url.gsub("http://","")%>  <a href="/<%=@test.id%>/view/day">Aujourd'hui ?</a>&nbsp;<a href="/<%=@test.id%>/view/week">Cette semaine ?</a>&nbsp;<a href="/<%=@test.id%>/view/month">Ce mois ?</a></h1>
   <%end%>
+
+  <div id="summary">  
+    <table>
+      <thead>
+      <tr>
+        <td>Temps de réponse moyen</td>
+        <td>Disponibilité moyenne</td>
+      </tr>
+    </thead>
+    <tbody> 
+      <tr>
+        <td><span><%="%.3f" % @mean%></span>s</td>
+        <td><span><%="%.2f" % (@uptime*100)%></span>%</td>
+      </tr>
+    </tbody>
+    </table>
+  </div>
+
   <h2>Temps de réponse en seconde</h2>
     <div id="placeholder" style="width:600px;height:300px;">
       

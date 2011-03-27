@@ -160,7 +160,7 @@ end
 
 get '/:id/view/:type' do
   user = AppEngine::Users.current_user
-  if user    
+  if user
     @test = Test.first(:id => params[:id], :user => user)
     if @test
       if params[:type] == "day"
@@ -168,24 +168,59 @@ get '/:id/view/:type' do
         todayB = Time.local(todayL.year,todayL.month,todayL.day) #00:00
         @results = @test.results.all(:date.gte => todayB,:date.lte => todayL,:order => [:date.asc])
         @type = "day" #display graph by hour/day
+        @mean,@uptime = 0,0
+        archive =@test.archives.first(:type => "day", :date => todayB)
+        @mean = archive.mean
+        @uptime = archive.uptime/archive.nbValues
+
       elsif params[:type] == "week"
         today = Time.now
         todayL = Time.local(today.year,today.month,today.day) #00:00
         todayB = todayL - 604800
         @results = @test.archives.all(:type => "day",:date.gte => todayB,:date.lte => todayL,:order => [:date.asc])
         @type = "week" #display graph by hour/day
+        @mean,@uptime,nb = 0,0,0
+        @results.each do |result|
+          @mean = @mean + result.mean
+          @uptime = @uptime + (result.uptime/result.nbValues)
+          nb = nb+1
+        end
+        if nb > 0
+          @mean = @mean / nb
+          @uptime = @uptime / nb
+        end
       elsif params[:type] == "month"
         today = Time.now
         todayL = Time.local(today.year,today.month,today.day) #00:00
         todayB = todayL - 2678400
         @results = @test.archives.all(:type => "day",:date.gte => todayB,:date.lte => todayL,:order => [:date.asc])
         @type = "month" #display graph by month
+         @mean,@uptime,nb = 0,0,0
+        @results.each do |result|
+          @mean = @mean + result.mean
+          @uptime = @uptime + (result.uptime/result.nbValues)
+          nb = nb+1
+        end
+        if nb > 0
+          @mean = @mean / nb
+          @uptime = @uptime / nb
+        end
       else
         today = Time.now
         todayL = Time.local(today.year,today.month,today.day) #00:00
         todayB = Time.local(today.year,1,1)
         @results = @test.archives.all(:type => "week",:date.gte => todayB,:date.lte => todayL,:order => [:date.asc])
         @type = "year" #display graph by hour/day
+         @mean,@uptime,nb = 0,0,0
+        @results.each do |result|
+          @mean = @mean + result.mean
+          @uptime = @uptime + (result.uptime/result.nbValues)
+          nb = nb+1
+        end
+        if nb > 0
+          @mean = @mean / nb
+          @uptime = @uptime / nb
+        end
       end
       erb :list
     else
@@ -255,8 +290,4 @@ get '/go' do
     archives(value,date,test,"week")
   end
   return "Done"
-end
-
-get '/ping' do
-  return "Im alive!"
 end
