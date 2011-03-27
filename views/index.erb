@@ -1,4 +1,4 @@
-<h1>Liste des tests <a href="/new">Créer un nouveau test?</a></h1>
+<h2>Liste des tests <a href="/new">Créer un nouveau test?</a></h2>
 
 <% unless @array.empty? %>
 <div id="nicetable" >
@@ -29,7 +29,6 @@
             <%if archive == nil%>
               <td><img src="construction.png" alt="pas de valeur!"></td>
             <%else%>
-              <%=archive.id%>
               <%if archive.uptime/archive.nbValues < 0.98%>
               <td><img src="nok.png" id="tip" tooltip="Max: <%=archive.max%> <br/>Min: <%=archive.min%> <br/>Moy: <%= "%.3f" % archive.mean%> <br/>Dispo: <%= "%.2f" % (archive.uptime/archive.nbValues*100)%>%"></td>
               <%elsif archive.mean > 1%>

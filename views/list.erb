@@ -2,13 +2,13 @@
 
 <% unless @results.empty? %>
   <%if @type == "day"%>
-    <h1>Aujourd'hui sur <%= @test.url.gsub("http://","")%>  <a href="/<%=@test.id%>/view/week">Cette semaine ?</a>&nbsp;<a href="/<%=@test.id%>/view/month">Ce mois ?</a>&nbsp;<a href="/<%=@test.id%>/view/year">Cette année ?</a></h1>
+    <h2>Aujourd'hui sur <%= @test.url.gsub("http://","")%>  <a href="/<%=@test.id%>/view/week">Cette semaine ?</a>&nbsp;<a href="/<%=@test.id%>/view/month">Ce mois ?</a>&nbsp;<a href="/<%=@test.id%>/view/year">Cette année ?</a></h2>
   <%elsif @type == "week"%>
-    <h1>Cette semaine sur <%= @test.url.gsub("http://","")%>  <a href="/<%=@test.id%>/view/day">Aujourd'hui ?</a>&nbsp;<a href="/<%=@test.id%>/view/month">Ce mois ?</a>&nbsp;<a href="/<%=@test.id%>/view/year">Cette année ?</a></h1>
+    <h2>Cette semaine sur <%= @test.url.gsub("http://","")%>  <a href="/<%=@test.id%>/view/day">Aujourd'hui ?</a>&nbsp;<a href="/<%=@test.id%>/view/month">Ce mois ?</a>&nbsp;<a href="/<%=@test.id%>/view/year">Cette année ?</a></h2>
   <%elsif @type == "month"%>
-    <h1>Ce mois sur <%= @test.url.gsub("http://","")%>  <a href="/<%=@test.id%>/view/day">Aujourd'hui ?</a>&nbsp;<a href="/<%=@test.id%>/view/week">Cette semaine ?</a>&nbsp;<a href="/<%=@test.id%>/view/year">Cette année ?</a></h1>
+    <h2>Ce mois sur <%= @test.url.gsub("http://","")%>  <a href="/<%=@test.id%>/view/day">Aujourd'hui ?</a>&nbsp;<a href="/<%=@test.id%>/view/week">Cette semaine ?</a>&nbsp;<a href="/<%=@test.id%>/view/year">Cette année ?</a></h2>
   <%else%>
-    <h1>Cette année sur <%= @test.url.gsub("http://","")%>  <a href="/<%=@test.id%>/view/day">Aujourd'hui ?</a>&nbsp;<a href="/<%=@test.id%>/view/week">Cette semaine ?</a>&nbsp;<a href="/<%=@test.id%>/view/month">Ce mois ?</a></h1>
+    <h2>Cette année sur <%= @test.url.gsub("http://","")%>  <a href="/<%=@test.id%>/view/day">Aujourd'hui ?</a>&nbsp;<a href="/<%=@test.id%>/view/week">Cette semaine ?</a>&nbsp;<a href="/<%=@test.id%>/view/month">Ce mois ?</a></h2>
   <%end%>
 
   <div id="summary">  

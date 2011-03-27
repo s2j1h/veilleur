@@ -26,9 +26,14 @@ h1 {
   font-size: 1.75em; 
 } 
 
-h1 a {
-  font-size: 0.5em;
-  font-weight: normal;
+h1 a,h1 a:link,h1 a:visited, h1 a:hover,h1 a:focus {
+  text-decoration:none;
+  border: 0;
+}
+
+h2 a {
+  font-size: 0.7em;
+  font-weight: normal; 
 }
 
 h2 { 
