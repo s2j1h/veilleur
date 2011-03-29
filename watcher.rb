@@ -61,7 +61,6 @@ get '/' do
     (0..6).each do |i|
       myDate = todayL - (6-i)*86400
       @array[0][myDate] = myDate.strftime("%d/%m")
-
     end
     line = 1 #line0 = line with dates
     tests.each do |test|
@@ -158,6 +157,28 @@ def archives(value,date,test,type)
   end
 end
 
+get '/:id/view_archives' do
+ user = AppEngine::Users.current_user
+  if user
+    @archive = Archive.first(:id => params[:id])
+    if @archive
+      @test = @archive.test
+      dateB = @archive.date
+      dateL = Time.local(dateB.year,dateB.month,dateB.day,23,59) #00:00
+      @results =  @test.results.all(:date.gte => dateB,:date.lte => dateL,:order => [:date.asc])
+      @type = "day" #display graph by hour/day
+      @mean = @archive.mean
+      @uptime = @archive.uptime/@archive.nbValues
+      erb :list
+    else
+      redirect '/'
+    end
+  else
+    redirect AppEngine::Users.create_login_url('/') 
+  end
+end
+
+
 get '/:id/view/:type' do
   user = AppEngine::Users.current_user
   if user
@@ -168,11 +189,9 @@ get '/:id/view/:type' do
         todayB = Time.local(todayL.year,todayL.month,todayL.day) #00:00
         @results = @test.results.all(:date.gte => todayB,:date.lte => todayL,:order => [:date.asc])
         @type = "day" #display graph by hour/day
-        @mean,@uptime = 0,0
-        archive =@test.archives.first(:type => "day", :date => todayB)
-        @mean = archive.mean
-        @uptime = archive.uptime/archive.nbValues
-
+        @archive =@test.archives.first(:type => "day", :date => todayB)
+        @mean = @archive.mean
+        @uptime = @archive.uptime/archive.nbValues
       elsif params[:type] == "week"
         today = Time.now
         todayL = Time.local(today.year,today.month,today.day) #00:00

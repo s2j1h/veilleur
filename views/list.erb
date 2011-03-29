@@ -2,7 +2,7 @@
 
 <% unless @results.empty? %>
   <%if @type == "day"%>
-    <h2>Aujourd'hui sur <%= @test.url.gsub("http://","")%>  <a href="/<%=@test.id%>/view/week">Cette semaine ?</a>&nbsp;<a href="/<%=@test.id%>/view/month">Ce mois ?</a>&nbsp;<a href="/<%=@test.id%>/view/year">Cette année ?</a></h2>
+    <h2>Le <%= @archive.date.strftime("%d/%m/%y") %> sur <%= @test.url.gsub("http://","")%>  <a href="/<%=@test.id%>/view/week">Cette semaine ?</a>&nbsp;<a href="/<%=@test.id%>/view/month">Ce mois ?</a>&nbsp;<a href="/<%=@test.id%>/view/year">Cette année ?</a></h2>
   <%elsif @type == "week"%>
     <h2>Cette semaine sur <%= @test.url.gsub("http://","")%>  <a href="/<%=@test.id%>/view/day">Aujourd'hui ?</a>&nbsp;<a href="/<%=@test.id%>/view/month">Ce mois ?</a>&nbsp;<a href="/<%=@test.id%>/view/year">Cette année ?</a></h2>
   <%elsif @type == "month"%>
