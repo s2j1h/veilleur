@@ -1,11 +1,4 @@
-<!-- Indices written at Tue, 29 Mar 2011 21:11:33 UTC -->
+<!-- Indices written at Mon, 4 Apr 2011 20:30:52 UTC -->
 
-<datastore-indexes>
+<datastore-indexes/>
 
-    <!-- Used 2 times in query history -->
-    <datastore-index kind="Results" ancestor="false" source="auto">
-        <property name="test_id" direction="asc"/>
-        <property name="date" direction="asc"/>
-    </datastore-index>
-
-</datastore-indexes>

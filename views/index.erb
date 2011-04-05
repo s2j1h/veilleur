@@ -30,7 +30,7 @@
               <td><img src="construction.png" alt="pas de valeur!"></td>
             <%else%>
               <%if archive.uptime/archive.nbValues < 0.98%>
-              <td><img src="nok.png" id="tip" tooltip="Max: <%=archive.max%> <br/>Min: <%=archive.min%> <br/>Moy: <%= "%.3f" % archive.mean%> <br/>Dispo: <%= "%.2f" % (archive.uptime/archive.nbValues*100)%>%"></td>
+                <td><A HREF="/<%= archive.id %>/view_archives"><img src="nok.png" id="tip" tooltip="Max: <%=archive.max%> <br/>Min: <%=archive.min%> <br/>Moy: <%= "%.3f" % archive.mean%> <br/>Dispo: <%= "%.2f" % (archive.uptime/archive.nbValues*100)%>%"></a></td>
               <%elsif archive.mean > 1%>
                 <td><A HREF="/<%= archive.id %>/view_archives"><img src="warning.png" id="tip" tooltip="Max: <%=archive.max%> <br/>Min: <%=archive.min%> <br/>Moy: <%= "%.3f" % archive.mean%> <br/>Dispo: <%= "%.2f" % (archive.uptime/archive.nbValues*100)%>%"></a></td>
               <%else%>

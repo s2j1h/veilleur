@@ -158,13 +158,13 @@ def archives(value,date,test,type)
 end
 
 get '/:id/view_archives' do
- user = AppEngine::Users.current_user
+  user = AppEngine::Users.current_user
   if user
     @archive = Archive.first(:id => params[:id])
     if @archive
       @test = @archive.test
       dateB = @archive.date
-      dateL = Time.local(dateB.year,dateB.month,dateB.day,23,59) #00:00
+      dateL = Time.local(dateB.year,dateB.month,dateB.day,23,59) 
       @results =  @test.results.all(:date.gte => dateB,:date.lte => dateL,:order => [:date.asc])
       @type = "day" #display graph by hour/day
       @mean = @archive.mean
@@ -291,7 +291,6 @@ get '/mail' do
 end
 
 get '/go' do
-  logger.debug "DEBUT /go"
   tests = Test.all
   tests.each do |test|
     date, value = Time.new, 0
@@ -310,3 +309,21 @@ get '/go' do
   end
   return "Done"
 end
+
+get '/cleanup' do
+  dateNow = Time.new - 691200
+  dateB = Time.local(dateNow.year,dateNow.month,dateNow.day)
+  dateL = Time.local(dateB.year,dateB.month,dateB.day,23,59)
+  tests = Test.all
+  tests.each do |test|
+    logger.debug "Récupération de #{test.url}"
+    results =  Result.all(:date.gte => dateB,:date.lte => dateL,:test => test)
+    logger.debug "récupération données"
+    results.each do |result|
+      logger.debug "Suppression de #{result.date}"
+      result.destroy
+    end
+  end
+  return 'done'
+end
+
